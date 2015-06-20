@@ -1,29 +1,24 @@
 /* Copyright 2013 Gagarine Yaikhom (The MIT License) */
-(function() {
-    Beeswarm = function(data, xaxis, radius) {
+(function () {
+    Beeswarm = function (data, xaxis, radius) {
         this.data = data;
         this.xaxis = xaxis;
         this.radius = radius;
-    }
-
-    Beeswarm.prototype = {
-        swarm: function() {
-            var me = this, swarm = [], swarm_boundary = [],
-            xaxis = me.xaxis, radius = me.radius,
-            data = me.data, i, c = data.length;
-            data.sort(get_comparator('y'));
-            for (i = 0; i < c; ++i)
-                swarm.push({
-                    'x': get_x(i, data[i], swarm_boundary, xaxis, radius),
-                    'y': data[i].y
-                });
-            return swarm;
-        }
+        var swarm = [], swarm_boundary = [],
+            i, c = data.length;
+        data.sort(get_comparator('y'));
+        for (i = 0; i < c; ++i)
+            swarm.push({
+                'x': get_x(i, data[i], swarm_boundary, xaxis, radius),
+                'y': data[i].y
+            });
+        this.swarm = swarm;
     };
+
 
     function find_intersections(circle, height) {
         var effective_height = height - circle.y,
-        diameter = 2 * circle.radius;
+            diameter = 2 * circle.radius;
         if (effective_height - diameter > 0)
             return undefined;
 
@@ -63,7 +58,7 @@
     }
 
     function get_comparator(p, q) {
-        return function(a, b) {
+        return function (a, b) {
             if (a[p] === b[p]) {
                 if (q === undefined)
                     return 0;
@@ -119,14 +114,14 @@
 
     function get_x(index, datum, swarm_boundary, xaxis, radius) {
         var x, y = datum.y,
-        isects = find_candidate_intervals(y, swarm_boundary),
-        preferred_choice = {
-            'index': index,
-            'isEnd': false,
-            'isValid': true,
-            'x': xaxis,
-            'y': y
-        };
+            isects = find_candidate_intervals(y, swarm_boundary),
+            preferred_choice = {
+                'index': index,
+                'isEnd': false,
+                'isValid': true,
+                'x': xaxis,
+                'y': y
+            };
         isects.push(preferred_choice);
         isects.push(preferred_choice);
         isects = remove_invalid_intervals(isects);
