@@ -4,8 +4,7 @@
         this.data = data;
         this.xaxis = xaxis;
         this.radius = radius;
-        var swarm = [], swarm_boundary = [],
-            i, c = data.length;
+        var swarm = [], swarm_boundary = [], i, c = data.length;
         data.sort(get_comparator('y'));
         for (i = 0; i < c; ++i)
             swarm.push({
