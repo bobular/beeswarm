@@ -1,28 +1,41 @@
 /* Copyright 2013 Gagarine Yaikhom (The MIT License) */
 (function () {
     Beeswarm = function (data, xaxis, radius) {
+        var xmax = 0;
+
         this.data = data;
         this.xaxis = xaxis;
         this.radius = radius;
         var swarm = [], swarm_boundary = [], i, c = data.length;
         data.sort(get_comparator('y'));
-        for (i = 0; i < c; ++i)
+        for (i = 0; i < c; ++i) {
             swarm.push({
                 'x': get_x(i, data[i], swarm_boundary, xaxis, radius),
                 'y': data[i].y
             });
+            var X = Math.abs(swarm[i].x);
+            if (X > xmax) xmax = X;
+        }
         this.swarm = swarm;
+        if (xmax === 0) xmax = 1;
+        this.domain = [-xmax, xmax];
     };
 
 
     function find_intersections(circle, height) {
         var effective_height = height - circle.y,
             diameter = 2 * circle.radius;
-        if (effective_height - diameter > 0)
+
+        if (effective_height - diameter > 0) {
+            console.log('undef:' + (effective_height - diameter));
             return undefined;
 
+        }
+        //console.log('h:' + height + ' oh:' + circle.y + ' eh:' + effective_height + ' d:' + diameter + ' sd:' + scaledDiameter);
         var cx = circle.x, x = Math.sqrt(diameter * diameter
             - effective_height * effective_height), index = circle.index;
+
+        //console.log('ind:' + circle.index + ' h:' + height + ' oh:' + circle.y + ' eh:' + effective_height + ' d:' + diameter + ' cx:' + circle.x  + ' x:' + x);
         return {
             'p1': {
                 'index': index,
