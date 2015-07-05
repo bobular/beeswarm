@@ -19,6 +19,7 @@
         this.swarm = swarm;
         if (xmax === 0) xmax = 1;
         this.domain = [-xmax, xmax];
+        this.maxPoints = Math.floor(xmax / radius);
     };
 
 
