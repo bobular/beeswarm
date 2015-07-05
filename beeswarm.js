@@ -32,11 +32,9 @@
             return undefined;
 
         }
-        //console.log('h:' + height + ' oh:' + circle.y + ' eh:' + effective_height + ' d:' + diameter + ' sd:' + scaledDiameter);
         var cx = circle.x, x = Math.sqrt(diameter * diameter
             - effective_height * effective_height), index = circle.index;
 
-        //console.log('ind:' + circle.index + ' h:' + height + ' oh:' + circle.y + ' eh:' + effective_height + ' d:' + diameter + ' cx:' + circle.x  + ' x:' + x);
         return {
             'p1': {
                 'index': index,
