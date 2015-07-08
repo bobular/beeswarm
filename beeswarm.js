@@ -28,7 +28,6 @@
             diameter = 2 * circle.radius;
 
         if (effective_height - diameter > 0) {
-            console.log('undef:' + (effective_height - diameter));
             return undefined;
 
         }
