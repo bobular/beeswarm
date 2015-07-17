@@ -1,16 +1,17 @@
 /* Copyright 2013 Gagarine Yaikhom (The MIT License) */
 (function () {
-    Beeswarm = function (data, xaxis, radius) {
+    Beeswarm = function (data, xaxis, radius, scaleFactor) {
         var xmax = 0;
 
         this.data = data;
         this.xaxis = xaxis;
         this.radius = radius;
+        this.scaleFactor = scaleFactor;
         var swarm = [], swarm_boundary = [], i, c = data.length;
         data.sort(get_comparator('y'));
         for (i = 0; i < c; ++i) {
             swarm.push({
-                'x': get_x(i, data[i], swarm_boundary, xaxis, radius),
+                'x': get_x(i, data[i], swarm_boundary, xaxis, radius, scaleFactor) / scaleFactor,
                 'y': data[i].y
             });
             var X = Math.abs(swarm[i].x);
@@ -19,9 +20,8 @@
         this.swarm = swarm;
         if (xmax === 0) xmax = 1;
         this.domain = [-xmax, xmax];
-        this.maxPoints = Math.floor(xmax / radius);
+        this.maxPoints = Math.ceil((xmax * scaleFactor) / radius);
     };
-
 
     function find_intersections(circle, height) {
         var effective_height = height - circle.y,
@@ -122,8 +122,8 @@
         return intervals[distance[0].i].x;
     }
 
-    function get_x(index, datum, swarm_boundary, xaxis, radius) {
-        var x, y = datum.y,
+    function get_x(index, datum, swarm_boundary, xaxis, radius, scaleFactor) {
+        var x, y = datum.y * scaleFactor,
             isects = find_candidate_intervals(y, swarm_boundary),
             preferred_choice = {
                 'index': index,
